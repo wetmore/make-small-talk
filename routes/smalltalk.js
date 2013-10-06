@@ -36,12 +36,12 @@ function getInane(res) {
         var ot = r.object ? r.object.text : '';
         var text = st + ' ' + at + ' ' + ot;
         res.json({
-          subject: 'gossip',
+          topic: 'gossip',
           text: text
         });
       } else {
         res.json({
-          subject: 'lol',
+          topic: 'lol',
           text: 'you should follow @wetmore on GitHub'
         });
       }
@@ -96,12 +96,12 @@ function getWatercooler(res) {
             var ot = r.object ? r.object.text : '';
             var text = st + ' ' + at + ' ' + ot;
             res.json({
-              subject: 'news',
+              topic: 'news',
               text: text
             });
           } else {
             res.json({
-              subject: 'lol',
+              topic: 'lol',
               text: 'you should follow @wetmore on GitHub'
             });
           }
@@ -141,12 +141,12 @@ function getPseudo(res) {
           var ot = r.object ? r.object.text : '';
           var text = st + ' ' + at + ' ' + ot;
           res.json({
-            subject: 'news',
+            topic: 'news',
             text: text
           });
         } else {
           res.json({
-            subject: 'lol',
+            topic: 'lol',
             text: 'you should follow @wetmore on GitHub'
           });
         }
