@@ -4,7 +4,8 @@ var request = require('request')
 
 // keys
 var wunderkey = '42c3ee410f744198'
-  , alchemykey = 'b2eb68b44445316ffd00617bbb4e2186d39d5170';
+  , alchemykey = 'b2eb68b44445316ffd00617bbb4e2186d39d5170'
+  , nytkey = 'c91cb180cfe47fee8ab5fb17147456dc:16:66005247';
 
 var alchemyUrl = 'http://access.alchemyapi.com/calls/text/TextGetRelations';
 
@@ -30,7 +31,10 @@ function getInane(res) {
     }, function(error, response, body) {
       if (body.relations.length > 0) {
         var r = body.relations[0];
-        var text = r.subject.text + ' ' + r.action.text + ' ' + r.object.text;
+        var st = r.subject ? r.subject.text : '';
+        var at = r.action ? r.action.text : '';
+        var ot = r.object ? r.object.text : '';
+        var text = st + ' ' + at + ' ' + ot;
         res.json({
           subject: 'gossip',
           text: text
@@ -38,7 +42,7 @@ function getInane(res) {
       } else {
         res.json({
           subject: 'lol',
-          text: 'I can\'t do this anymore'
+          text: 'you should follow @wetmore on GitHub'
         });
       }
     });
@@ -46,8 +50,8 @@ function getInane(res) {
 }
 
 function getWatercooler(res) {
-  var rand = 1// Math.random();
-  if (rand === 0) {
+  var rand = Math.random();
+  if (rand > 0.3) {
     // weather
     // make the wunderground api request
     var url = 'http://api.wunderground.com/api/' + 
@@ -64,12 +68,93 @@ function getWatercooler(res) {
     });
   } else {
     // news
-    //
+    var section = _.sample(['arts', 'sports', 'health']);
+    var url = 'http://api.nytimes.com/svc/mostpopular/v2/mostviewed/' +
+              section +
+              '/7.json';
+    request({
+      url: url,
+      json: true,
+      qs: {'api-key': nytkey }
+    }, function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        request({
+          url: alchemyUrl,
+          json: true,
+          qs: {
+            text: _.sample(body.results).abstract,
+            apikey: alchemykey,
+            maxRetrieve: 1,
+            outputMode: 'json'
+            //requireEntities: 1
+          }
+        }, function(error, response, body) {
+          if (body.relations.length > 0) {
+            var r = body.relations[0];
+            var st = r.subject ? r.subject.text : '';
+            var at = r.action ? r.action.text : '';
+            var ot = r.object ? r.object.text : '';
+            var text = st + ' ' + at + ' ' + ot;
+            res.json({
+              subject: 'news',
+              text: text
+            });
+          } else {
+            res.json({
+              subject: 'lol',
+              text: 'you should follow @wetmore on GitHub'
+            });
+          }
+        });
+        
+      }
+    });
   }
 }
 
 function getPseudo(res) {
-  
+  var section = _.sample(['science', 'politics']);
+  var url = 'http://api.nytimes.com/svc/mostpopular/v2/mostviewed/' +
+            section +
+            '/7.json';
+  request({
+    url: url,
+    json: true,
+    qs: {'api-key': nytkey }
+  }, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      request({
+        url: alchemyUrl,
+        json: true,
+        qs: {
+          text: _.sample(body.results).abstract,
+          apikey: alchemykey,
+          maxRetrieve: 1,
+          outputMode: 'json'
+          //requireEntities: 1
+        }
+      }, function(error, response, body) {
+        if (body.relations.length > 0) {
+          var r = body.relations[0];
+          var st = r.subject ? r.subject.text : '';
+          var at = r.action ? r.action.text : '';
+          var ot = r.object ? r.object.text : '';
+          var text = st + ' ' + at + ' ' + ot;
+          res.json({
+            subject: 'news',
+            text: text
+          });
+        } else {
+          res.json({
+            subject: 'lol',
+            text: 'you should follow @wetmore on GitHub'
+          });
+        }
+      });
+      
+    }
+  });
+
 }
 
 /*
