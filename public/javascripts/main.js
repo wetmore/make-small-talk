@@ -14,6 +14,7 @@ $(function() {
   };
 
   $('#choices .button').click(function(e) {
+    $('#triangle').show();
     var which = e.target.id;
     $('.dimmer').removeClass('inactive').addClass('active');
     $('#triangle').animate({ 'margin-left': map[which] + 'px' });
