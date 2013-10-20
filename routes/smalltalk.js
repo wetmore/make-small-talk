@@ -3,11 +3,11 @@ var request = require('request')
   , _ = require('underscore');
 
 // keys
-var wunderkey = '42c3ee410f744198'
-  , alchemykey = 'b2eb68b44445316ffd00617bbb4e2186d39d5170'
-  , nytkey = 'c91cb180cfe47fee8ab5fb17147456dc:16:66005247';
+var wunderkey = process.env.WUNDER_KEY
+  , alchemykey = process.env.ALCHEMY_KEY
+  , nytkey = process.env.NYT_KEY;
 
-var alchemyUrl = 'http://access.alchemyapi.com/calls/text/TextGetRelations';
+  var alchemyUrl = 'http://access.alchemyapi.com/calls/text/TextGetRelations';
 
 function getInane(res) {
   var summaries = [];
@@ -174,5 +174,4 @@ exports.generate = function(req, res) {
       break;
   }
 
-  // return the json yo
 };

@@ -7,14 +7,9 @@ $(function() {
     'weather': 'cloud'
   };
 
-  var which = '#watercooler';
+  var which = 'watercooler';
 
   $('#choices .button').click(function(e) {
-    var $t = $('#triangle');
-    if ($t.hasClass('gone')) {
-      $t.removeClass('gone');
-      $t.animate({ 'margin-top': '-24px' });
-    }
     which = e.target.id;
     $('.dimmer').removeClass('inactive').addClass('active');
 
@@ -36,6 +31,11 @@ $(function() {
       $('#speech-bubble i').removeClass()
         .addClass('icon').addClass(iconMap[data.topic]);
       $('.dimmer').removeClass('active').addClass('inactive');
+      var $t = $('#triangle');
+      if ($t.hasClass('gone')) {
+        $t.removeClass('gone');
+        $t.animate({ 'margin-top': '-24px' });
+      }
 
     });
   });
